@@ -1,21 +1,40 @@
 const express = require('express');
 const router = express.Router();
-const { authenticateToken, requireAdmin } = require('../middleware/auth');
-const {
-  getAllMovies,
-  getMovieById,
-  createMovie,
-  updateMovie,
-  deleteMovie
-} = require('../controllers/movieController');
+const Movie = require('../models/Movie');
 
-// Public routes
-router.get('/', getAllMovies);
-router.get('/:id', getMovieById);
+// Get all movies
+router.get('/', async (req, res) => {
+  try {
+    const movies = await Movie.find().sort({ createdAt: -1 });
+    res.json(movies);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
 
-// Protected routes (admin only)
-router.post('/', authenticateToken, requireAdmin, createMovie);
-router.put('/:id', authenticateToken, requireAdmin, updateMovie);
-router.delete('/:id', authenticateToken, requireAdmin, deleteMovie);
+// Get movie by ID
+router.get('/:id', async (req, res) => {
+  try {
+    const movie = await Movie.findById(req.params.id);
+    if (!movie) {
+      return res.status(404).json({ message: 'Movie not found' });
+    }
+    res.json(movie);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+// Search movies
+router.get('/search/:query', async (req, res) => {
+  try {
+    const movies = await Movie.find({
+      $text: { $search: req.params.query }
+    });
+    res.json(movies);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
 
 module.exports = router;

@@ -84,20 +84,17 @@ const sampleTheaters = [
   {
     name: 'CineMax Grand',
     location: 'Downtown Plaza, Mumbai',
-    totalSeats: 120,
-    showtimes: []
+    totalSeats: 120
   },
   {
     name: 'PVR Phoenix',
     location: 'Phoenix Mall, Bangalore',
-    totalSeats: 120,
-    showtimes: []
+    totalSeats: 120
   },
   {
     name: 'INOX City Centre',
     location: 'City Centre Mall, Delhi',
-    totalSeats: 120,
-    showtimes: []
+    totalSeats: 120
   }
 ];
 
@@ -162,12 +159,12 @@ const seedDatabase = async () => {
     console.log(`✅ ${movies.length} movies inserted`);
 
     // Insert theaters
-    console.log(' Inserting theaters...');
+    console.log('🏢 Inserting theaters...');
     const theaters = await Theater.insertMany(sampleTheaters);
     console.log(`✅ ${theaters.length} theaters inserted`);
 
     // Insert users
-    console.log(' Inserting users...');
+    console.log('👥 Inserting users...');
     const users = await User.insertMany(sampleUsers);
     console.log(`✅ ${users.length} users inserted`);
 
@@ -196,11 +193,11 @@ const seedDatabase = async () => {
     console.log(`   Password: admin123`);
     
     mongoose.connection.close();
-    console.log(' MongoDB connection closed');
+    console.log('🔌 MongoDB connection closed');
   } catch (error) {
     console.error('❌ Error seeding database:', error);
     if (error.message.includes('MONGODB_URI')) {
-      console.log('\n Solution: Create a .env file in your server directory with:');
+      console.log('\n💡 Solution: Create a .env file in your server directory with:');
       console.log('   MONGODB_URI=mongodb+srv://movie_booking_user:Likhilbr@5432@YOUR_CLUSTER_URL/movie_booking?retryWrites=true&w=majority');
     }
     process.exit(1);

@@ -7,10 +7,8 @@ const connectDB = async () => {
       throw new Error('MONGODB_URI environment variable is not set. Please check your .env file.');
     }
 
-    console.log('🔌 Attempting to connect to MongoDB Atlas...');
-    console.log('📡 Connection string:', process.env.MONGODB_URI.replace(/\/\/[^:]+:[^@]+@/, '//***:***@'));
-
     const conn = await mongoose.connect(process.env.MONGODB_URI, {
+      // Remove deprecated options
       maxPoolSize: 10,
       serverSelectionTimeoutMS: 5000,
       socketTimeoutMS: 45000,
@@ -39,7 +37,7 @@ const connectDB = async () => {
     console.error(`❌ Connection Error: ${error.message}`);
     if (error.message.includes('MONGODB_URI')) {
       console.log('\n Solution: Create a .env file in your server directory with:');
-      console.log('   MONGODB_URI=mongodb+srv://movie_booking_user:Likhilbr5432@cluster0.igp9bgg.mongodb.net/movie_booking?retryWrites=true&w=majority&appName=Cluster0');
+      console.log('MONGODB_URI=mongodb+srv://movie_booking_user:Likhilbr5432@cluster0.igp9bgg.mongodb.net/movie_booking?retryWrites=true&w=majority&appName=Cluster0');
     }
     process.exit(1);
   }

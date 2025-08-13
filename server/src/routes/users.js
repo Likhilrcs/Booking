@@ -28,7 +28,7 @@ router.post('/register', async (req, res) => {
     // Generate JWT token
     const token = jwt.sign(
       { userId: user._id, email: user.email },
-      process.env.JWT_SECRET,
+      process.env.JWT_SECRET || 'fallback_secret_key',
       { expiresIn: '24h' }
     );
 
@@ -68,7 +68,7 @@ router.post('/login', async (req, res) => {
     // Generate JWT token
     const token = jwt.sign(
       { userId: user._id, email: user.email },
-      process.env.JWT_SECRET,
+      process.env.JWT_SECRET || 'fallback_secret_key',
       { expiresIn: '24h' }
     );
 
@@ -96,7 +96,7 @@ router.get('/profile', async (req, res) => {
       return res.status(401).json({ message: 'No token provided' });
     }
 
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'fallback_secret_key');
     const user = await User.findById(decoded.userId).select('-password');
     
     if (!user) {
